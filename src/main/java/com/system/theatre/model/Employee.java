@@ -1,5 +1,9 @@
 package com.system.theatre.model;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.bind.DefaultValue;
+import org.springframework.lang.Nullable;
+
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.util.List;
@@ -13,45 +17,39 @@ public class Employee
             message = "Значение должно содержать буквы русского или латинского алфавита")
     private String lastname;
     @NotEmpty(message = "Имя обязательно")
-    @Size(min = 2, max = 50, message = "Значени должно находиться в диапазоне от 2 до 50 символов")
-    @Pattern(regexp = "^([а-яА-Яё]+|[a-zA-Z]+)$",
-            message = "Значение должно содержать буквы русского или латинского алфавита")
-    private String firstname;
     @Size(min = 2, max = 50, message = "Значение должно находиться в диапазоне от 2 до 50 символов")
     @Pattern(regexp = "^([а-яА-Яё]+|[a-zA-Z]+)$",
             message = "Значение должно содержать буквы русского или латинского алфавита")
-    @Null
+    private String firstname;
+    @Size(min = 0, max = 50, message = "Значение должно находиться в диапазоне от 2 до 50 символов")
+    @Pattern(regexp = "^([а-яА-Яё]+|[a-zA-Z]+|\s*)$",
+            message = "Значение должно содержать буквы русского или латинского алфавита")
     private String middlename;
 
-    @Null
-    @Min(value = 50, message = "Миниимальное значение 50")
-    @Max(value = 300, message = "Максимально значение 300")
+    @Min(value = 0, message = "Миниимальное значение 0")
+    @Max(value = 300, message = "Максимальное значение 300")
     private double height;
 
-    @Null
-    @Min(value = 1, message = "Миниимальное значение 1")
-    @Max(value = 150, message = "Максимально значение 150")
+    @Min(value = 0, message = "Миниимальное значение 0")
+    @Max(value = 150, message = "Максимальное значение 150")
     private int age;
-    @Null
+
     private boolean ontour;
-    @Null
     private boolean isstudent;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "post_id")
     private Post post;
 
-    @Null
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "voiceType_id")
     private VoiceType voiceType;
 
-    @Null
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "gender_id")
     private Gender gender;
 
-    @Null
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private User user;
