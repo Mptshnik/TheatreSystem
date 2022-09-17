@@ -88,7 +88,7 @@
       <div class="form-check">
         <label class="form-check-label">
           <input id="checkBoxCreateAccount" onchange="check(this)" class="form-check-input" name="createAccount"
-                 type="checkbox">Создать аккаунт
+                 type="checkbox">Изменить аккаунт
         </label>
       </div>
       <script>
@@ -116,13 +116,13 @@
       </div>
       <div class="form-group col">
         <label>Пароль</label>
-        <input type="password" name="password" th:field="*{password}" class="form-control" placeholder="Введите пароль">
+        <input type="text" name="password" th:field="*{password}" class="form-control" placeholder="Введите пароль">
         <div class="invalid" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password error</div>
       </div>
       <div class="form-group col">
         <label>Роль</label>
         <select name="role" class="form-control">
-          <option th:each="r : ${T(com.system.theatre.model.Role).values()}"
+          <option th:selected="${r==user_role}" th:each="r : ${T(com.system.theatre.model.Role).values()}"
                   th:value="${r}"
                   th:text="${r}">
           </option>

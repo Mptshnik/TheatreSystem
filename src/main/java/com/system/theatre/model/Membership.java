@@ -7,7 +7,7 @@ import javax.validation.constraints.*;
 public class Membership
 {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotEmpty(message = "Наименование обязательно")
     @Size(min = 2, max = 50, message = "Значение должно находиться в диапазоне от 2 до 50 символов")

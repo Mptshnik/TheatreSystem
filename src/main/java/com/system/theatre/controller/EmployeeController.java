@@ -30,6 +30,10 @@ public class EmployeeController
     @Autowired
     private PostRepository postRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
+
     @GetMapping("/all")
     public String getEmployees(Model model)
     {
@@ -41,14 +45,20 @@ public class EmployeeController
         return "/employee/all";
     }
 
-    @GetMapping("/add")
-    public String addEmployee(@ModelAttribute("employee")Employee employee,
-                              @ModelAttribute("user") User user, Model model)
+    private void loadData(Model model)
     {
         model.addAttribute("voiceTypes", voiceTypeRepository.findAll());
         model.addAttribute("genders", genderRepository.findAll());
         model.addAttribute("posts", postRepository.findAll());
         model.addAttribute("header", getHtmlHeaderPath());
+    }
+
+    @GetMapping("/add")
+    public String addEmployee(@ModelAttribute("employee")Employee employee,
+                              Model model,
+                              @ModelAttribute("user") User user)
+    {
+        loadData(model);
 
         return "/employee/add";
     }
@@ -57,8 +67,11 @@ public class EmployeeController
     public String createEmployee(@ModelAttribute("employee") @Valid Employee employee, BindingResult employeeResult,
                                  @ModelAttribute("user") @Valid User user, BindingResult userResult,
                                  @RequestParam String role,
-                                 @RequestParam(value = "createAccount", required = false) String checkboxValue)
+                                 @RequestParam(value = "createAccount", required = false) String checkboxValue,
+                                 Model model)
     {
+        loadData(model);
+
         if(employeeResult.hasErrors())
         {
             return "/employee/add";
@@ -109,15 +122,21 @@ public class EmployeeController
         Employee employee = employeeRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid employee Id:" + id));
 
-        model.addAttribute("voiceTypes", voiceTypeRepository.findAll());
-        model.addAttribute("genders", genderRepository.findAll());
-        model.addAttribute("posts", postRepository.findAll());
-        model.addAttribute("header", getHtmlHeaderPath());
+        loadData(model);
+
         model.addAttribute("employee", employee);
-        if(employee.getUser() == null)
-            model.addAttribute("user", new User());
-        else
+        if(employee.getUser() != null)
+        {
             model.addAttribute("user", employee.getUser());
+            if(employee.getUser().getRoles().size() > 0)
+                model.addAttribute("user_role", Role.valueOf(employee.getUser().getRoles().toArray()[0].toString()));
+            else
+                model.addAttribute("user_role", Role.ADMIN);
+        }
+        else
+        {
+            model.addAttribute("user", new User());
+        }
 
         return "/employee/edit";
     }
@@ -127,21 +146,40 @@ public class EmployeeController
                                  @ModelAttribute("user") @Valid User user, BindingResult userResult,
                                  @RequestParam String role,
                                  @RequestParam(value = "createAccount", required = false) String checkboxValue,
-                                 @PathVariable("id") long id)
+                                 @PathVariable("id") long id, Model model)
     {
+        model.addAttribute("header", getHtmlHeaderPath());
+        Employee employeeFromDB = employeeRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid employee Id:" + id));
+
         if(employeeResult.hasErrors())
         {
-            return "/employee/update";
+            return "/employee/edit";
         }
 
         if(checkboxValue != null)
         {
             if(userResult.hasErrors())
             {
-                return "/employee/update";
+                return "/employee/edit";
             }
+
             user.setActive(true);
             user.setRoles(Collections.singleton(Role.valueOf(role)));
+
+            if(employeeFromDB.getUser() == null)
+            {
+                employee.setUser(user);
+            }
+            else
+            {
+                user.setId(employeeFromDB.getUser().getId());
+                employee.setUser(user);
+            }
+        }
+        else
+        {
+            user.setId(employeeFromDB.getUser().getId());
             employee.setUser(user);
         }
 

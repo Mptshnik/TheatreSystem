@@ -50,7 +50,7 @@ public class Employee
     @JoinColumn(name = "gender_id")
     private Gender gender;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private User user;
 
@@ -61,7 +61,7 @@ public class Employee
     private List<SceneRole> sceneRoles;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     public User getUser() {

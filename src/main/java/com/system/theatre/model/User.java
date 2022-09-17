@@ -13,7 +13,7 @@ public class User implements UserDetails
 {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotEmpty(message = "Имя пользователя обязательно")
     private String username;
@@ -24,7 +24,7 @@ public class User implements UserDetails
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "user", fetch = FetchType.EAGER)
     private Employee employee;
 
     public void setPassword(String password) {
