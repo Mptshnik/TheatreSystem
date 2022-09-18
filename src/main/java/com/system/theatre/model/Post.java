@@ -1,9 +1,9 @@
 package com.system.theatre.model;
 
+import org.springframework.beans.factory.annotation.Required;
+
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.util.List;
 
 @Entity
@@ -18,6 +18,20 @@ public class Post
     @Pattern(regexp = "^([а-яА-Яё]+|[a-zA-Z]+)$",
             message = "Значение должно содержать буквы русского или латинского алфавита")
     private String name;
+
+
+    public double getSalary() {
+        return salary;
+    }
+
+    public void setSalary(double salary) {
+        this.salary = salary;
+    }
+
+    @Min(value = 0, message = "Минимальное значение 0")
+    @Max(value = 100000, message = "Максимальное значение 1000000")
+    @Positive
+    private double salary;
 
     public List<Employee> getEmployees() {
         return employees;

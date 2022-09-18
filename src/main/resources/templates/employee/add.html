@@ -45,7 +45,7 @@
                 <label>Тип голоса</label>
                 <select th:field="*{voiceType}" class="form-control">
                     <option th:value="${null}">_</option>
-                    <option th:each="voiceType : ${voiceTypes}" th:value="${voiceType}"
+                    <option th:each="voiceType : ${voiceTypes}" th:value="${voiceType.getId()}"
                             th:text="${voiceType.getName()}">
                     </option>
                 </select>
@@ -56,7 +56,7 @@
                 <label>Пол</label>
                 <select th:field="*{gender}" class="form-control">
                     <option th:value="${null}">_</option>
-                    <option th:each="gender : ${genders}" th:value="${gender}"
+                    <option th:each="gender : ${genders}" th:value="${gender.getId()}"
                             th:text="${gender.getName()}">
                     </option>
                 </select>
@@ -65,8 +65,8 @@
                 <label>Должность</label>
                 <select th:field="*{post}" class="form-control">
                     <option th:value="${null}">_</option>
-                    <option th:each="post : ${posts}" th:value="${post}"
-                            th:text="${post.getName()}">
+                    <option th:each="p : ${posts}" th:value="${p.getId()}"
+                            th:text="${p.getName()}">
                     </option>
                 </select>
             </div>

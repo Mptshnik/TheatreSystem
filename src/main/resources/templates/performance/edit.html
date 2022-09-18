@@ -1,0 +1,79 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Изменение спектакля</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link href="/styles.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css"
+          rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx"
+          crossorigin="anonymous">
+</head>
+<body>
+<div th:insert="${header}"></div>
+<section class="center-3">
+    <form th:action="@{/performance/update/{id}(id=${performance.getId()})}" th:object="${performance}" method="post">
+        <div class="row mb-2">
+            <div class="form-group col">
+                <label>Название</label>
+                <input type="text" name="name" th:field="*{name}" class="form-control" placeholder="Введите название">
+                <div class="invalid" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name error</div>
+            </div>
+        </div>
+        <div class="row mb-2">
+            <div class="form-group col">
+                <label>Описание</label>
+                <textarea type="text" name="description" th:field="*{description}" class="form-control" placeholder="Введите описание"></textarea>
+                <div class="invalid" th:if="${#fields.hasErrors('description')}" th:errors="*{description}">Description error</div>
+            </div>
+        </div>
+        <div class="row mb-2">
+            <div class="form-group col">
+                <label>Дата премьеры</label>
+                <input type="date" name="premieredate" th:field="*{premieredate}" class="form-control">
+                <div class="invalid" th:if="${#fields.hasErrors('premieredate')}" th:errors="*{premieredate}">Premieredate error</div>
+            </div>
+        </div>
+        <div class="row mb-2">
+            <div class="form-group col">
+                <label>Тип представления</label>
+                <select th:field="*{performanceType}" class="form-control">
+                    <option th:value="${null}">_</option>
+                    <option th:selected="${performanceType==performance.getPerformanceType()}"
+                            th:each="performanceType: ${performanceTypes}"
+                            th:value="${performanceType.getId()}"
+                            th:text="${performanceType.getName()}">
+                    </option>
+                </select>
+            </div>
+        </div>
+        <div class="row mb-2">
+            <div class="form-group col">
+                <label>Жанр</label>
+                <select th:field="*{genre}" class="form-control">
+                    <option th:value="${null}">_</option>
+                    <option th:selected="${genre==performance.getGenre()}"
+                            th:each="genre : ${genres}"
+                            th:value="${genre.getId()}"
+                            th:text="${genre.getName()}">
+                    </option>
+                </select>
+            </div>
+        </div>
+        <div class="row mb-2">
+            <div class="form-group col">
+                <label>Автор</label>
+                <select th:field="*{author}" class="form-control">
+                    <option th:value="${null}">_</option>
+                    <option th:selected="${author==performance.getGenre()}"
+                            th:each="author : ${authors}"
+                            th:value="${author.getId()}"
+                            th:text="${author.getLastname() + ' ' + author.getFirstname() + ' ' + author.getMiddlename()}">
+                    </option>
+                </select>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Изменить</button>
+    </form>
+</section>
+</body>
+</html>

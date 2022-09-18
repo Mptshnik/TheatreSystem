@@ -1,9 +1,6 @@
 package com.system.theatre.controller;
 
-import com.system.theatre.model.Employee;
-import com.system.theatre.model.Role;
-import com.system.theatre.model.User;
-import com.system.theatre.model.VoiceType;
+import com.system.theatre.model.*;
 import com.system.theatre.repo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -12,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import com.google.common.collect.Lists;
 
 import javax.validation.Valid;
 import java.util.Collections;
@@ -19,7 +17,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/employee")
-public class EmployeeController
+public class EmployeeController extends BaseController
 {
     @Autowired
     private EmployeeRepository employeeRepository;
@@ -49,7 +47,7 @@ public class EmployeeController
     {
         model.addAttribute("voiceTypes", voiceTypeRepository.findAll());
         model.addAttribute("genders", genderRepository.findAll());
-        model.addAttribute("posts", postRepository.findAll());
+        model.addAttribute("posts", Lists.newArrayList(postRepository.findAll()));
         model.addAttribute("header", getHtmlHeaderPath());
     }
 
@@ -189,26 +187,4 @@ public class EmployeeController
         return "redirect:/employee/all";
     }
 
-    private String getHtmlHeaderPath()
-    {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String role = authentication.getAuthorities().toString();
-
-        String path = "";
-
-        if(role.contains("ADMIN"))
-        {
-            path = "/headers/admin-header";
-        }
-        else if(role.contains("DIRECTOR"))
-        {
-            path = "/headers/director-header";
-        }
-        else if(role.contains("CASHIER"))
-        {
-            path = "/headers/cashier-header";
-        }
-
-        return path;
-    }
 }

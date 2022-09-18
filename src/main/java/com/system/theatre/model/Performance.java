@@ -1,10 +1,9 @@
 package com.system.theatre.model;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
-import javax.validation.constraints.Future;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -14,17 +13,19 @@ public class Performance
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotEmpty(message = "Наименование обязательно")
+    @NotEmpty(message = "Поле обязательно")
     @Size(min = 2, max = 50, message = "Значение должно находиться в диапазоне от 2 до 50 символов")
-    @Pattern(regexp = "^([а-яА-Яё]+|[a-zA-Z]+)$",
+    @Pattern(regexp = "^([а-яА-Яё\s]+|[a-zA-Z\s]+)$",
             message = "Значение должно содержать буквы русского или латинского алфавита")
     private String name;
-    @NotEmpty(message = "Описание обязательно")
+    @NotEmpty(message = "Поле обязательно")
     @Size(min = 2, max = 1000, message = "Значение должно находиться в диапазоне от 2 до 1000 символов")
-    @Pattern(regexp = "^([а-яА-Яё]+|[a-zA-Z]+)$",
+    @Pattern(regexp = "^([а-яА-Яё\s]+|[a-zA-Z\s]+)$",
             message = "Значение должно содержать буквы русского или латинского алфавита")
     private String description;
-    @Future
+    @Future(message = "Дата должна быть больше текущей")
+    @NotNull(message = "Поле обязательно")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate premieredate;
 
     @ManyToOne

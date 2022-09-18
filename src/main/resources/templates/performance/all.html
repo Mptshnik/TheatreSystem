@@ -1,0 +1,67 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Спектакли</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link href="/performance-all.css" rel="stylesheet">
+    <link href="/styles.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css"
+          rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx"
+          crossorigin="anonymous">
+</head>
+<body>
+<div th:insert="${header}"></div>
+<div class="center-7">
+    <h1 class="display-4">Все спектакли</h1>
+    <br>
+    <a href="/performance/add">Добавить</a>
+    <h1 class="display-4" th:if="${performancesEmpty}">Нет данных</h1>
+    <div th:each="performance : ${performances}">
+        <div>
+            <div class="row align-items-center flex-row-reverse">
+                <div th:object="${performance}">
+                    <div class="col-lg-6">
+                        <div class="about-text go-to">
+                            <h3 class="display-3" th:text="*{name}"></h3>
+                            <p th:text="*{description}"></p>
+                            <div class="row about-list">
+                                <div class="col-md-6">
+                                    <div class="media">
+                                        <label>Дата премьеры</label>
+                                        <div th:text="*{premieredate}"></div>
+                                    </div>
+                                    <div class="media">
+                                        <label>Тип спектакля</label>
+                                        <div th:if="*{performanceType == null}">Не указано</div>
+                                        <div th:text="*{performanceType?.getName()}"></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="media">
+                                        <label>Жанр</label>
+                                        <div th:if="*{genre == null}">Не указано</div>
+                                        <div th:text="*{genre?.getName()}"></div>
+                                    </div>
+                                    <div class="media">
+                                        <label>Автор</label>
+                                        <div th:if="*{author == null}">Не указано</div>
+                                        <div th:if="*{author != null}" th:text="*{author?.getLastname() + ' '
+                                        + author?.getFirstname() + ' '
+                                        + author?.getMiddlename()}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <a th:href="@{/performance/add-actors/{id}(id=${performance.getId()})}" class="btn btn-outline-primary">Актеры</a>
+        <a th:href="@{/performance/edit/{id}(id=${performance.getId()})}" class="btn btn-outline-primary">Изменить</a>
+        <a th:href="@{/performance/delete/{id}(id=${performance.getId()})}" class="btn btn-outline-danger">Удалить</a>
+        <br><br>
+    </div>
+</div>
+</body>
+</html>
