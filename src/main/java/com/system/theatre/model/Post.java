@@ -41,8 +41,13 @@ public class Post
         this.employees = employees;
     }
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany(cascade={CascadeType.PERSIST}, mappedBy = "post")
     private List<Employee> employees;
+
+    @PreRemove
+    private void preRemove() {
+        employees.forEach(employee -> employee.setPost(null));
+    }
 
     public Post(String name) {
         this.name = name;

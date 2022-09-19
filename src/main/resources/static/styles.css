@@ -2,9 +2,13 @@
     color: red;
 }
 
+.success{
+    color: green;
+}
+
 .center-1{
     width: 10%;
-    margin: 100px auto;
+    margin: 50px auto;
 }
 
 .center-2{
@@ -20,12 +24,12 @@
 
 .center-4{
     width: 40%;
-    margin: 100px auto;
+    margin: 50px auto;
 }
 
 .center-5{
     width: 50%;
-    margin: 100px auto;
+    margin: 50px auto;
 }
 
 .center-6{
@@ -40,7 +44,7 @@
 
 .center-8{
     width: 80%;
-    margin: 100px auto;
+    margin: 50px auto;
 }
 
 body{

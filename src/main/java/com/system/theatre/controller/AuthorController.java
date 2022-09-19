@@ -56,6 +56,8 @@ public class AuthorController extends BaseController
 
         authorRepository.delete(author);
 
+
+
         return "redirect:/author/all";
     }
 

@@ -36,7 +36,7 @@ public class Performance
     @JoinColumn(name = "genre_id")
     private Genre genre;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "author_id")
     private Author author;
 
@@ -48,7 +48,7 @@ public class Performance
                     referencedColumnName = "id"))
     private List<Employee> employees;
 
-    @OneToMany(mappedBy = "performance")
+    @OneToMany(mappedBy = "performance", cascade = CascadeType.REMOVE)
     private List<SceneRole> sceneRoles;
 
     public List<Ticket> getTickets() {

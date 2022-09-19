@@ -44,7 +44,7 @@
         <label>Тип голоса</label>
         <select th:field="*{voiceType}" class="form-control">
           <option th:value="${null}">_</option>
-          <option th:each="voiceType : ${voiceTypes}" th:value="${voiceType}"
+          <option th:each="voiceType : ${voiceTypes}" th:value="${voiceType.getId()}"
                   th:text="${voiceType.getName()}">
           </option>
         </select>
@@ -55,7 +55,7 @@
         <label>Пол</label>
         <select th:field="*{gender}" class="form-control">
           <option th:value="${null}">_</option>
-          <option th:each="gender : ${genders}" th:value="${gender}"
+          <option th:each="gender : ${genders}" th:value="${gender.getId()}"
                   th:text="${gender.getName()}">
           </option>
         </select>
@@ -64,7 +64,7 @@
         <label>Должность</label>
         <select th:field="*{post}" class="form-control">
           <option th:value="${null}">_</option>
-          <option th:each="post : ${posts}" th:value="${post}"
+          <option th:each="post : ${posts}" th:value="${post.getId()}"
                   th:text="${post.getName()}">
           </option>
         </select>
@@ -79,8 +79,11 @@
     </div>
     <div class="form-group">
       <div class="form-check">
-        <label class="form-check-label">
-          <input class="form-check-input" type="checkbox"  th:field="*{ontour}">На гастролях
+        <label class="form-check-label" th:if="*{getSceneRoles().size()==0}">
+          <input class="form-check-input" type="checkbox" th:field="*{ontour}">На гастролях
+        </label>
+        <label class="form-check-label" th:if="*{getSceneRoles().size()>0}">
+          <input class="form-check-input" disabled type="checkbox" th:field="*{ontour}">На гастролях
         </label>
       </div>
     </div>
@@ -131,6 +134,7 @@
     </div>
     <br>
     <button type="submit" class="btn btn-primary">Изменить</button>
+    <a th:href="@{/employee/all}" class="btn btn-outline-danger">Отмена</a>
   </form>
 </section>
 </body>

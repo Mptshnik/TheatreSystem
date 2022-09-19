@@ -1,11 +1,10 @@
 package com.system.theatre.controller;
 
+import com.google.common.collect.Lists;
 import com.system.theatre.model.Employee;
 import com.system.theatre.model.Performance;
-import com.system.theatre.repo.AuthorRepository;
-import com.system.theatre.repo.GenreRepository;
-import com.system.theatre.repo.PerformanceRepository;
-import com.system.theatre.repo.PerformanceTypeRepository;
+import com.system.theatre.model.SceneRole;
+import com.system.theatre.repo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -25,6 +24,10 @@ import java.time.format.DateTimeFormatter;
 public class PerformanceController extends BaseController
 {
     @Autowired
+    private SceneRoleRepository sceneRoleRepository;
+    @Autowired
+    private EmployeeRepository employeeRepository;
+    @Autowired
     private PerformanceRepository performanceRepository;
     @Autowired
     private PerformanceTypeRepository performanceTypeRepository;
@@ -40,6 +43,32 @@ public class PerformanceController extends BaseController
         model.addAttribute("authors", authorRepository.findAll());
     }
 
+    @GetMapping("/{id}/all-actors")
+    public String allActors(@PathVariable("id") long id, Model model)
+    {
+        insertHeader(model);
+
+        Performance performance = performanceRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid performance Id:" + id));
+
+        model.addAttribute("sceneRoles", performance.getSceneRoles());
+
+        return "/scenerole/all";
+    }
+
+    @GetMapping("/delete-actor/{id}")
+    public String deleteActor(@PathVariable("id") long id, Model model)
+    {
+        insertHeader(model);
+
+        SceneRole sceneRole = sceneRoleRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid sceneRole Id:" + id));
+
+        sceneRoleRepository.delete(sceneRole);
+
+        return "/scenerole/all";
+    }
+
     @GetMapping("/all")
     public String allPerformances(Model model)
     {
@@ -47,6 +76,7 @@ public class PerformanceController extends BaseController
 
         model.addAttribute("performances", performanceRepository.findAll());
         model.addAttribute("performancesEmpty", performanceRepository.count() == 0);
+        model.addAttribute("sceneRolesEmpty", sceneRoleRepository.count() == 0);
 
         return "/performance/all";
     }

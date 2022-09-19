@@ -1,13 +1,11 @@
 package com.system.theatre.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.util.Set;
 
 @Entity
 public class Author
@@ -27,6 +25,18 @@ public class Author
     @Pattern(regexp = "^([а-яА-Яё]+|[a-zA-Z]+|\s*)$",
             message = "Значение должно содержать буквы русского или латинского алфавита")
     private String middlename;
+
+    @OneToMany(cascade={CascadeType.PERSIST}, mappedBy = "author")
+    private Set<Performance> performances;
+
+    @OneToMany(cascade={CascadeType.PERSIST}, mappedBy = "author")
+    private Set<Membership> memberships;
+
+    @PreRemove
+    private void preRemove() {
+        performances.forEach(performance -> performance.setAuthor(null));
+        memberships.forEach(membership -> membership.setAuthor(null));
+    }
 
     public Author()
     {

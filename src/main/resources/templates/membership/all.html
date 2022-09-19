@@ -1,0 +1,46 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Абонементы</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link href="/styles.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css"
+          rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx"
+          crossorigin="anonymous">
+</head>
+<body>
+<div th:insert="${header}"></div>
+<div class="center-5">
+    <h1 class="display-4">Все абонементы</h1>
+    <a th:href="@{/membership/add}">Добавить</a>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Название</th>
+            <th>Цена</th>
+            <th>Тип спектакля</th>
+            <th>Автор</th>
+            <th>Жанр</th>
+            <th>Изменение</th>
+            <th>Удаление</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="membership : ${memberships}">
+            <td th:text="${membership.getName()}"></td>
+            <td th:text="${membership.getPrice()}"></td>
+            <td th:text="${membership.getPerformanceType()?.getName()}"></td>
+            <td>
+                <div th:text="${membership.getAuthor()?.getLastname()}"></div>
+                <div th:text="${membership.getAuthor()?.getFirstname()}"></div>
+                <div th:text="${membership.getAuthor()?.getMiddlename()}"></div>
+            </td>
+            <td th:text="${membership.getGenre()?.getName()}"></td>
+            <td><a th:href="@{/membership/edit/{id}(id=${membership.getId()})}" class="btn btn-outline-primary">Изменить</a></td>
+            <td><a th:href="@{/membership/delete/{id}(id=${membership.getId()})}" class="btn btn-outline-danger">Удалить</a></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

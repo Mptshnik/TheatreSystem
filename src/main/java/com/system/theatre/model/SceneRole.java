@@ -10,9 +10,8 @@ import javax.validation.constraints.Size;
 public class SceneRole
 {
     @Size(min = 2, max = 50, message = "Значение должно находиться в диапазоне от 2 до 50 символов")
-    @Pattern(regexp = "^([а-яА-Яё]+|[a-zA-Z]+|[0-9]+)$",
+    @Pattern(regexp = "^([а-яА-Яё\s]+|[a-zA-Z\s]+|[0-9\s]+)$",
             message = "Значение должно содержать буквы русского или латинского алфавита или цифры 0-9")
-    @Column(unique = true)
     @NotEmpty(message = "Значение обязательно")
     private String name;
 
@@ -29,6 +28,30 @@ public class SceneRole
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Employee getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
+    }
+
+    public Performance getPerformance() {
+        return performance;
+    }
+
+    public void setPerformance(Performance performance) {
+        this.performance = performance;
+    }
 
     public void setId(Long id) {
         this.id = id;

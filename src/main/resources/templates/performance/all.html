@@ -51,13 +51,23 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div th:if="${sceneRolesEmpty == false}">
+                                    Актеры:
+                                    <div th:each="sceneRole : ${performance.getSceneRoles()}">
+                                        <div th:text="${sceneRole.employee.getLastname() + ' '
+                                        + sceneRole.employee.getFirstname() + ' ' + sceneRole.employee.getMiddlename() + '-' +
+                                        sceneRole.getName()}">
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <a th:href="@{/performance/add-actors/{id}(id=${performance.getId()})}" class="btn btn-outline-primary">Актеры</a>
+        <br>
+        <a th:href="@{/performance/{id}/all-actors(id=${performance.getId()})}" class="btn btn-outline-primary">Актеры</a>
         <a th:href="@{/performance/edit/{id}(id=${performance.getId()})}" class="btn btn-outline-primary">Изменить</a>
         <a th:href="@{/performance/delete/{id}(id=${performance.getId()})}" class="btn btn-outline-danger">Удалить</a>
         <br><br>

@@ -22,11 +22,11 @@ public class Membership
     @JoinColumn(name = "performanceType_id")
     private PerformanceType performanceType;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "genre_id")
     private Genre genre;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "author_id")
     private Author author;
 

@@ -139,6 +139,8 @@ public class EmployeeController extends BaseController
         return "/employee/edit";
     }
 
+
+
     @PostMapping("/update/{id}")
     public String updateEmployee(@ModelAttribute("employee") @Valid Employee employee, BindingResult employeeResult,
                                  @ModelAttribute("user") @Valid User user, BindingResult userResult,
@@ -177,14 +179,53 @@ public class EmployeeController extends BaseController
         }
         else
         {
-            user.setId(employeeFromDB.getUser().getId());
-            employee.setUser(user);
+            if(employee.getUser() != null)
+            {
+                user.setId(employeeFromDB.getUser().getId());
+                employee.setUser(user);
+            }
         }
 
         employee.setId(id);
         employeeRepository.save(employee);
 
         return "redirect:/employee/all";
+    }
+
+    @GetMapping("/search")
+    public String getFilter(Model model)
+    {
+        insertHeader(model);
+
+        return "/employee/search";
+    }
+
+    @PostMapping("/search-accurate")
+    public String searchAdvanced(@RequestParam String value, Model model)
+    {
+        insertHeader(model);
+
+        List<Employee> result = employeeRepository.findByLastnameOrFirstnameOrMiddlename(value, value, value);
+        if(result == null)
+        {
+            model.addAttribute("notFound", true);
+            return "/employee/search";
+        }
+
+        model.addAttribute("result", result);
+        model.addAttribute("notFound", result.size() == 0);
+        return "/employee/search";
+    }
+
+    @PostMapping("/search")
+    public String simpleSearch(@RequestParam String value, Model model)
+    {
+        insertHeader(model);
+
+        List<Employee> result = employeeRepository.findByLastnameOrFirstnameOrMiddlenameContains(value, value, value);
+        model.addAttribute("result", result);
+        model.addAttribute("notFound", result.size() == 0);
+        return "/employee/search";
     }
 
 }

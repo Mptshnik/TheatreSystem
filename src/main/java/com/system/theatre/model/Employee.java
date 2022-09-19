@@ -57,7 +57,7 @@ public class Employee
     @ManyToMany(mappedBy = "employees")
     private List<Performance> performances;
 
-    @OneToMany(mappedBy = "employee")
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.REMOVE)
     private List<SceneRole> sceneRoles;
 
     @Id

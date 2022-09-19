@@ -1,0 +1,71 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Изменение абонемента</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link href="/styles.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css"
+          rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx"
+          crossorigin="anonymous">
+</head>
+<body>
+<div th:insert="${header}"></div>
+<section class="center-5">
+    <form th:action="@{/membership/update/{id}(id=${membership.getId()})}" th:object="${membership}" method="post">
+        <div class="row mb-4">
+            <div class="form-group col">
+                <label>Название</label>
+                <input type="text" name="name" th:field="*{name}" class="form-control" placeholder="Введите название">
+                <div class="invalid" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name error</div>
+            </div>
+        </div>
+        <div class="row mb-4">
+            <div class="form-group col">
+                <label>Стоимость</label>
+                <input type="text" name="price" th:field="*{price}" class="form-control" placeholder="Введите стоимость">
+                <div class="invalid" th:if="${#fields.hasErrors('price')}" th:errors="*{price}">Price error</div>
+            </div>
+        </div>
+        <div class="row mb-4">
+            <div class="form-group col">
+                <label>Тип спектакля</label>
+                <select th:field="*{performanceType}" class="form-control">
+                    <option th:value="${null}">_</option>
+                    <option th:selected="${p==membership.getPerformanceType()}"
+                            th:each="p : ${performanceTypes}" th:value="${p.getId()}"
+                            th:text="${p.getName()}">
+                    </option>
+                </select>
+            </div>
+        </div>
+        <div class="row mb-4">
+            <div class="form-group col">
+                <label>Жанр</label>
+                <select th:field="*{genre}" class="form-control">
+                    <option th:value="${null}">_</option>
+                    <option th:selected="${g==membership.getGenre()}"
+                            th:each="g : ${genres}" th:value="${g.getId()}"
+                            th:text="${g.getName()}">
+                    </option>
+                </select>
+            </div>
+        </div>
+        <div class="row mb-4">
+            <div class="form-group col">
+                <label>Автор</label>
+                <select th:field="*{author}" class="form-control">
+                    <option th:value="${null}">_</option>
+                    <option th:selected="${a==membership.getAuthor()}"
+                            th:each="a : ${authors}" th:value="${a.getId()}"
+                            th:text="${a.getLastname() + ' ' + a.getFirstname() + ' ' + a.getMiddlename()}">
+                    </option>
+                </select>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Изменить</button>
+        <a th:href="@{/membership/all}" class="btn btn-outline-danger">Отмена</a>
+    </form>
+    <br>
+</section>
+</body>
+</html>
