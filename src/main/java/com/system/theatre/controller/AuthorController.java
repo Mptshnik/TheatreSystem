@@ -68,10 +68,18 @@ public class AuthorController extends BaseController
     {
         insertHeader(model);
 
+        Author authorFromDB = authorRepository.findByLastname(author.getLastname());
+        if(authorFromDB != null)
+        {
+            bindingResult.rejectValue("lastname", "error.author", "Автор с такой фамилией уже сущестует");
+        }
+
         if(bindingResult.hasErrors())
         {
             return "/author/add";
         }
+
+
 
         authorRepository.save(author);
 
@@ -85,6 +93,12 @@ public class AuthorController extends BaseController
                                Model model)
     {
         insertHeader(model);
+
+        Author authorFromDB = authorRepository.findByLastname(author.getLastname());
+        if(authorFromDB != null && authorFromDB.getId() != author.getId())
+        {
+            bindingResult.rejectValue("lastname", "error.author", "Автор с такой фамилией уже сущестует");
+        }
 
         if(bindingResult.hasErrors())
         {

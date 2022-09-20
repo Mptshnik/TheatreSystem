@@ -5,6 +5,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
 import java.util.Collection;
 import java.util.Set;
 
@@ -16,8 +17,12 @@ public class User implements UserDetails
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotEmpty(message = "Имя пользователя обязательно")
+    @Pattern(regexp = "^([а-яА-Яё]+|[a-zA-Z]+)$",
+            message = "Значение должно содержать буквы русского или латинского алфавита")
     private String username;
     @NotEmpty(message = "Пароль обязательный")
+    @Pattern(regexp = "^([а-яА-Яё0-9]+|[a-zA-Z0-9]+)$",
+            message = "Значение должно содержать цифры, буквы русского или латинского алфавита")
     private String password;
     private boolean active;
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)

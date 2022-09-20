@@ -8,6 +8,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import com.google.common.collect.Lists;
 
@@ -77,10 +78,20 @@ public class EmployeeController extends BaseController
 
         if(checkboxValue != null)
         {
+            User userFromDB = userRepository.findByUsername(user.getUsername());
+
             if(userResult.hasErrors())
             {
                 return "/employee/add";
             }
+
+            if(userFromDB != null)
+            {
+                model.addAttribute("userExists", true);
+
+                return "/employee/add";
+            }
+
             user.setActive(true);
             user.setRoles(Collections.singleton(Role.valueOf(role)));
             employee.setUser(user);
@@ -154,6 +165,7 @@ public class EmployeeController extends BaseController
 
         if(employeeResult.hasErrors())
         {
+            loadData(model);
             return "/employee/edit";
         }
 
@@ -161,6 +173,7 @@ public class EmployeeController extends BaseController
         {
             if(userResult.hasErrors())
             {
+                loadData(model);
                 return "/employee/edit";
             }
 
@@ -179,9 +192,10 @@ public class EmployeeController extends BaseController
         }
         else
         {
-            if(employee.getUser() != null)
+            if(employeeFromDB.getUser() != null)
             {
                 user.setId(employeeFromDB.getUser().getId());
+                user.setRoles(employeeFromDB.getUser().getRoles());
                 employee.setUser(user);
             }
         }

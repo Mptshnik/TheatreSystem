@@ -18,6 +18,7 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @Controller
 @RequestMapping("/performance")
@@ -153,4 +154,30 @@ public class PerformanceController extends BaseController
         return "redirect:/performance/all";
     }
 
+
+    @GetMapping("/search")
+    public String getFilter(Model model)
+    {
+        insertHeader(model);
+
+        return "/performance/search";
+    }
+
+
+    @PostMapping("/search-accurate")
+    public String searchAdvanced(@RequestParam String value, Model model)
+    {
+        insertHeader(model);
+
+        List<Performance> result = performanceRepository.findByNameContains(value);
+        if(result == null)
+        {
+            model.addAttribute("notFound", true);
+            return "/performance/search";
+        }
+
+        model.addAttribute("result", result);
+        model.addAttribute("notFound", result.size() == 0);
+        return "/performance/search";
+    }
 }

@@ -15,6 +15,7 @@
     <h1 class="display-4">Все спектакли</h1>
     <br>
     <a href="/performance/add">Добавить</a>
+    <a href="/performance/search">Поиск</a>
     <h1 class="display-4" th:if="${performancesEmpty}">Нет данных</h1>
     <div th:each="performance : ${performances}">
         <div>

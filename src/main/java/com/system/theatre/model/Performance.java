@@ -20,8 +20,8 @@ public class Performance
     private String name;
     @NotEmpty(message = "Поле обязательно")
     @Size(min = 2, max = 1000, message = "Значение должно находиться в диапазоне от 2 до 1000 символов")
-    @Pattern(regexp = "^([а-яА-Яё\s]+|[a-zA-Z\s]+)$",
-            message = "Значение должно содержать буквы русского или латинского алфавита")
+    @Pattern(regexp = "^([а-яА-Яё0-9.,\"?!\s]+|[a-zA-Z0-9.,\"?!\s]+)$",
+            message = "Значение должно содержать цифры, буквы русского или латинского алфавита или символы \",.?!")
     private String description;
     @Future(message = "Дата должна быть больше текущей")
     @NotNull(message = "Поле обязательно")

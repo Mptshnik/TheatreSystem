@@ -22,7 +22,7 @@ public class Employee
             message = "Значение должно содержать буквы русского или латинского алфавита")
     private String firstname;
     @Size(min = 0, max = 50, message = "Значение должно находиться в диапазоне от 2 до 50 символов")
-    @Pattern(regexp = "^([а-яА-Яё]+|[a-zA-Z]+|\s*)$",
+    @Pattern(regexp = "^([а-яА-Яё]+|[a-zA-Z]+|\s{0})$",
             message = "Значение должно содержать буквы русского или латинского алфавита")
     private String middlename;
 
